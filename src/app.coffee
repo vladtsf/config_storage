@@ -11,16 +11,18 @@ app.configure () ->
 	app.use express.cookieParser()
 	app.use require './uid'
 	app.use app.router
-	app.set 'memcached', ['127.0.0.1:11211']
-	app.set 'mongobase', 'mongo://localhost/default'
 
 app.configure 'development', () ->
 	app.use express.errorHandler
 		dumpExceptions: true
 		showStack: true
+	app.set 'memcached', '127.0.0.1:11211'
+	app.set 'mongobase', 'mongo://localhost/default'
 
 app.configure 'production', () ->
 	app.use express.errorHandler()
+	app.set 'memcached', process.env.MEMCACHED
+	app.set 'mongobase', process.env.MONGODB
 
 # Routes
 require './api'

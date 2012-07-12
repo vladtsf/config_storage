@@ -1,11 +1,11 @@
 mongoose = require('../mongo')
 Schema = mongoose.Schema
-ObjectId = Schema.ObjectId
+ObjectId = Schema.Types.ObjectId
 Mixed = Schema.Types.Mixed
 
 Storage = new Schema
 	uid :
-		type: ObjectId
+		type: String
 		index: true
 	data:
 		type: Mixed
