@@ -16,5 +16,5 @@ app.post '/set/', (req, res) ->
 	res.end()
 
 app.get '/data/', (req, res) ->
-	Storage.find uid: req.uid, (err, doc) ->
-			res.json doc || []
+	Storage.findOne uid: req.uid, (err, doc) ->
+			res.json doc || {}
