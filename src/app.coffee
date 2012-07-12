@@ -8,8 +8,11 @@ app = module.exports = express.createServer()
 app.configure () ->
 	app.use express.bodyParser()
 	app.use express.methodOverride()
+	app.use express.cookieParser()
+	app.use require './uid'
 	app.use app.router
 	app.set 'memcached', ['127.0.0.1:11211']
+	app.set 'mongobase', 'mongo://localhost/default'
 
 app.configure 'development', () ->
 	app.use express.errorHandler
