@@ -1,5 +1,3 @@
-# md5 = require './md5'
-
 module.exports = (req, res, next) ->
 	uid = req.cookies.cntuid
 
