@@ -2,7 +2,18 @@
 # Module dependencies.
 # 
 express = require 'express'
+program = require 'commander'
+pkg = require '../package'
 app = module.exports = express.createServer()
+
+# CLI args
+program
+	.version(pkg.version)
+	.option('-p, --port <port>', 'REST service port', 3000)
+	.option('-b, --mongo <string>', 'MongoDB connection string', 'mongo://localhost/default')
+	.option('-m, --memcached <string>', 'Memcached servers list', '127.0.0.1:11211')
+	.parse(process.argv);
+
 
 # Configuration
 app.configure () ->
@@ -12,20 +23,25 @@ app.configure () ->
 	app.use require './uid'
 	app.use app.router
 
+	app.set 'memcached', program.memcached
+	app.set 'mongobase', program.mongo
+
 app.configure 'development', () ->
 	app.use express.errorHandler
 		dumpExceptions: true
 		showStack: true
-	app.set 'memcached', '127.0.0.1:11211'
-	app.set 'mongobase', 'mongo://localhost/default'
 
 app.configure 'production', () ->
 	app.use express.errorHandler()
-	app.set 'memcached', process.env.MEMCACHED
-	app.set 'mongobase', process.env.MONGODB
 
 # Routes
 require './api'
 
-app.listen 3000, () ->
-  console.log "Express server listening on port #{app.address().port} in #{app.settings.env} mode"
+app.listen program.port, () ->
+	console.log """
+		REST server listening
+		Port		: \u001b[91m#{app.address().port}\u001b[0m
+		Memcached	: \u001b[91m#{app.settings.memcached}\u001b[0m
+		MongoDB		: \u001b[91m#{app.settings.mongobase}\u001b[0m
+		Mode		: \u001b[91m#{app.settings.env}\u001b[0m
+	"""
