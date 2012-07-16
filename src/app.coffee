@@ -12,6 +12,7 @@ program
 	.option('-p, --port <port>', 'REST service port', 3000)
 	.option('-b, --mongo <string>', 'MongoDB connection string', 'mongo://localhost/default')
 	.option('-m, --memcached <string>', 'Memcached servers list', '127.0.0.1:11211')
+	.option('--memcached-prefix <string>', 'Memcached keys prefix', 'storage_')
 	.parse(process.argv);
 
 
@@ -25,6 +26,7 @@ app.configure () ->
 
 	app.set 'memcached', program.memcached
 	app.set 'mongobase', program.mongo
+	app.set 'memcachedPrefix', program.memcachedPrefix
 
 app.configure 'development', () ->
 	app.use express.errorHandler
@@ -40,8 +42,9 @@ require './api'
 app.listen program.port, () ->
 	console.log """
 		REST server listening
-		Port		: \u001b[91m#{app.address().port}\u001b[0m
-		Memcached	: \u001b[91m#{app.settings.memcached}\u001b[0m
-		MongoDB		: \u001b[91m#{app.settings.mongobase}\u001b[0m
-		Mode		: \u001b[91m#{app.settings.env}\u001b[0m
+		Port			: \u001b[91m#{app.address().port}\u001b[0m
+		Memcached		: \u001b[91m#{app.settings.memcached}\u001b[0m
+		Memcached Prefix	: \u001b[91m#{app.settings.memcachedPrefix}\u001b[0m
+		MongoDB			: \u001b[91m#{app.settings.mongobase}\u001b[0m
+		Mode			: \u001b[91m#{app.settings.env}\u001b[0m
 	"""

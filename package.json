@@ -19,7 +19,7 @@
         "url": "https://github.com:sportsru/config_storage"
   	}
   , "main": "./app.js"
-  , "version": "0.0.3"
+  , "version": "0.0.4"
   , "private": true
   , "dependencies": {
         "express": "2.5.10"
