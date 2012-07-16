@@ -38,4 +38,4 @@ app.post '/set/', (req, res) ->
 
 app.get '/data/', (req, res) ->
 	Storage.findOne uid: req.uid, (err, doc) ->
-		res.json doc || {}
+		res.json if doc? then doc.data else {}
