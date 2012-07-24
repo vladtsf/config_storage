@@ -12,7 +12,6 @@ program
 	.option('-p, --port <port>', 'REST service port', 3000)
 	.option('-b, --mongo <string>', 'MongoDB connection string', 'mongo://localhost/default')
 	.option('-m, --memcached <string>', 'Memcached servers list', '127.0.0.1:11211')
-	.option('-c, --cookie-name <string>', 'Unique identity cookie name', 'cntuid')
 	.option('--memcached-prefix <string>', 'Memcached keys prefix', 'storage_')
 	.parse(process.argv);
 
@@ -21,14 +20,13 @@ program
 app.configure () ->
 	app.use express.bodyParser()
 	app.use express.methodOverride()
-	app.use express.cookieParser()
-	app.use require './uid'
+	# app.use express.cookieParser()
+	# app.use require './uid'
 	app.use app.router
 
 	app.set 'memcached', program.memcached
 	app.set 'mongobase', program.mongo
 	app.set 'memcachedPrefix', program.memcachedPrefix
-	app.set 'cookieName', program.cookieName
 
 app.configure 'development', () ->
 	app.use express.errorHandler
@@ -49,5 +47,4 @@ app.listen program.port, () ->
 		Memcached Prefix	: \u001b[91m#{app.settings.memcachedPrefix}\u001b[0m
 		MongoDB			: \u001b[91m#{app.settings.mongobase}\u001b[0m
 		Mode			: \u001b[91m#{app.settings.env}\u001b[0m
-		Cookie			: \u001b[91m#{app.settings.cookieName}\u001b[0m
 	"""
