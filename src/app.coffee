@@ -12,7 +12,7 @@ program
 	.option('-p, --port <port>', 'REST service port', 3000)
 	.option('-b, --mongo <string>', 'MongoDB connection string', 'mongo://localhost/default')
 	.option('-m, --memcached <string>', 'Memcached servers list', '127.0.0.1:11211')
-	.option('--memcached-prefix <string>', 'Memcached keys prefix', 'storage_')
+	.option('--memcached-prefix <string>', 'Memcached keys prefix', 's_')
 	.parse(process.argv);
 
 
