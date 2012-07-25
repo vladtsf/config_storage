@@ -21,7 +21,7 @@ app.configure () ->
 	app.use express.bodyParser()
 	app.use express.methodOverride()
 	# app.use express.cookieParser()
-	# app.use require './uid'
+	app.use require './uid'
 	app.use app.router
 
 	app.set 'memcached', program.memcached
