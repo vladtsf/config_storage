@@ -12,6 +12,7 @@ program
 	.option('-p, --port <port>', 'REST service port', 3000)
 	.option('-b, --mongo <string>', 'MongoDB connection string', 'mongo://localhost/default')
 	.option('-m, --memcached <string>', 'Memcached servers list', '127.0.0.1:11211')
+	.option('-v, --verbose', 'Log requests', false)
 	.option('--memcached-prefix <string>', 'Memcached keys prefix', 's_')
 	.parse(process.argv);
 
@@ -20,10 +21,12 @@ program
 app.configure () ->
 	app.use express.bodyParser()
 	app.use express.methodOverride()
-	# app.use express.cookieParser()
+	app.use express.logger('short') if program.verbose
 	app.use require './uid'
 	app.use app.router
+	# app.use express.cookieParser()
 
+	app.set 'verbose', program.verbose
 	app.set 'memcached', program.memcached
 	app.set 'mongobase', program.mongo
 	app.set 'memcachedPrefix', program.memcachedPrefix
